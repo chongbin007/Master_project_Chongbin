@@ -71,18 +71,18 @@ June 11 at 11.30am (Zoom, Natalia)
 - send and receive message via ROS ,然后是自定义（custom）信息 many missing steps and some wrong instruction
 - 知道了整个系统如何运行的。
 
-
 ## week 5
 
 ### TODO
-- 添加文档并记录实验安装和配置，并记录installation and configuration英文版
-- experitment记录和设计
-- 继续看issac文档，完成experiment 7
-- 创建github
-- 写时间表
 - change **background** 
+- 添加文档并记录实验安装和配置，并记录installation and configuration英文版
+- timetable design
+- 继续看issac文档，完成experiment 7(周一开始）
+- experitment 1和2,3设计
 - 学习使用wireshark分析网络配置
 
+### done
+- upload code into bitbucket and github
 
 
 ## week 6
