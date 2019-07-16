@@ -173,6 +173,20 @@ ROS_ETC_DIR=/opt/ros/kinetic/etc/ros
 `export ROS_MASTER_URI=http://com1:11311/`
 `echo $ROS_MASTER_URI`
 
+**可以设置为自定义配置**
+`~/catkin_ws` 进入工作区目录
+`touch config_ip.sh`
+`vim config_ip.sh` 创建文件进行配置
+
+```
+# /bin/sh
+export ROS_HOSTNAME=com1
+export ROS_IP=192.168.1.11
+export ROS_MASTER_URI=http://com1:11311/
+```
+
+`source config_ip.sh` 以后每次执行该文件就可以完成ip和hostname都配置了
+
 然后运行
 确保catkin source
 `cd ~/catkin_ws`
@@ -181,6 +195,7 @@ ROS_ETC_DIR=/opt/ros/kinetic/etc/ros
 
 #### start talker
 
+**每次都配置：**
 设置本机名称：自己的主机
 `export ROS_HOSTNAME=com2`
 `echo $ROS_HOSTNAME`
@@ -191,6 +206,8 @@ ROS_ETC_DIR=/opt/ros/kinetic/etc/ros
 `export ROS_MASTER_URI=http://com1:11311/`
 `echo $ROS_MASTER_URI`
 
+
+
 然后运行
 确保catkin source
 `cd ~/catkin_ws`
@@ -198,6 +215,7 @@ ROS_ETC_DIR=/opt/ros/kinetic/etc/ros
 `rosrun rospy_tutorials talker.py`
 
 成功Listener会接受到talker传来的信息。该步骤用于测试，是否能够发送和接收成功。成功则进入下一步。
+
 
 ### 发送和接收自定义消息
 http://wiki.ros.org/ROS/Tutorials/CreatingMsgAndSrv#Creating_a_msg
@@ -218,6 +236,8 @@ http://wiki.ros.org/ROS/Tutorials/CreatingMsgAndSrv#Creating_a_msg
 
 1. 本地到远程
 `scp -r /Users/chongbin/Desktop/chongbin_master_project/code/rosberry_experiments ubuntu@192.168.1.12:/home/ubuntu/catkin_ws/src`
+1. 远程到本地
+`scp -r ubuntu@192.168.1.11:/home/ubuntu/catkin_ws/src/results /Users/chongbin/Desktop/chongbin_master_project/experiments/router_result`
 
 #### 运行工作区下的python文件
 当把文件夹拷贝过去之后
@@ -226,7 +246,7 @@ http://wiki.ros.org/ROS/Tutorials/CreatingMsgAndSrv#Creating_a_msg
 `catkin_make install`
 
 然后进行可执行文件的编译不然无法执行：
-cd进入该python所在文件
+`cd /home/ubuntu/catkin_ws/src/rosberry_experiments/src`
 `chmod +x test_latency_echo.py`
 然后运行监听文件
 `rosrun rosberry_experiments test_latency_echo.py 10 1000`
@@ -234,10 +254,12 @@ cd进入该python所在文件
 编译然后运行发送文件
 `chmod +x test_latency_main.py`
 `rosrun rosberry_experiments test_latency_main.py 10 1000`
+10表示rate频率，1000表示要发一千条消息。
 
-然后在`rosberry_experiments`文件夹下生成`times_10.txt` 记录文件。可以查看运行结果
+然后在`rosberry_experiments`文件夹下生成`times_10.txt` 记录文件。可以查看运行结果：
+ID(int),SendTime(float),RecvTime(float)
 
-Wait until the script running on the main robot exits and then Ctrl+C the script on the other robot if no longer needed (it will otherwise continue listening for messages and passing them back at the set rate).
+等到运行完之后停止退出监听。Wait until the script running on the main robot exits and then Ctrl+C the script on the other robot if no longer needed (it will otherwise continue listening for messages and passing them back at the set rate).
 
 Run "ls" on the main robot. There should now be a file titled times_RATE.txt, where RATE is the set publishing rate. This contains N lines - corresponding to each of the N messages -, where each line is composed of:
 
@@ -248,3 +270,8 @@ SendTime and RecvTime are Unix time values and thus represent the seconds (+frac
 Notes:
 * Make sure you save or copy the times_RATE.txt files before re-running the experiment with the same rate value, as the old values will be overwritten.
 
+### 运行issac experiment4
+先在接收端
+`rosrun rosberry_experiments test_latency_echo.py`
+再在发送端
+`source run_experiment.sh`
