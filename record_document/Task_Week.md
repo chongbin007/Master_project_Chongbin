@@ -74,28 +74,19 @@ June 11 at 11.30am (Zoom, Natalia)
 ## week 5
 
 ### TODO
-- 添加文档并记录实验安装和配置，并记录installation and configuration英文版
-- 继续看issac文档，完成experiment 7(周一开始）
-- experitment 1和2,3设计
-
-hongbin
+- resolving configuration issue with ROS communicating(all question is in project steps file)
+- experitment 1 finished
+- experiment 2 design
 
 To add a section on resolving configuration issues with ROS
 Main body
 Appendix (How to)
-To record Experiment 1 (reproducing Isaac’s Exp 7 – Fig 4.4)
-To design experiments 2 and 3
-Title
-Objective
-Rationale
-Hypothesis
-To revise the plan and update it
 
 经过我的查询，node的数量对我的实验没有任何帮助或者说影响。所以我觉得我没必要复现实验7.像你说的因为他做的所以我们尽可能快速的复现他的实验。
 ### Done
 - upload code into bitbucket and github
 - timetable design
-
+- project steps detailes
 
 ## week 6
 June 18 at 11.30am (Zoom, Natalia)
