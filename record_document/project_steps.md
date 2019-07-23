@@ -2,26 +2,27 @@
 
 ## Ubuntu and ROS system installation
 1. Down load the latest version image of Ubuntu with ROS in the ROS official website.
-2. Write the image to Raspberry Pi directly.
-3. Now the ubuntu system with installed ROS and envoriment 
+2. Write the image to Raspberry Pi by using SD card.
+3. Start the ubuntu system with installed ROS and envonriment automatically. 
 4. Type `roscore` to test whether ROS system exist.
 
 ### Issues
-Raspbian latest system(buster) is not well supported by ROS system. Therefore, there are many bugs and manually installation steps to solve when you want to install ROS in Raspbian operating system. Then the ubuntu is recommend system as official website said.
+Raspbian 10(buster) is not well supported by ROS system. There are some outdated dependencies which is needed in installing ROS. Therefore, there are many bugs and manually installation steps to solve when user want to install ROS in Raspbian operating system. Then the ubuntu is recommend operating system as official website said.
 
 ## Router network configuration
-1. Each Pi connect to the LAN in one router.
-2. Assign static IP address to each Pi for ssh remote control.
-3. Using one computer to join this LAN for controlling the different Pi.
-4. `ssh ubuntu@{ip address}` with password.
+1. Each Raspberry Pi should connect to the same LAN.
+2. Assign static IP address to each Raspberry Pi for ssh remote control and management.
+3. Using one computer to join this LAN for controlling the all Raspberry Pi.
+4. Remote control other Raspberry Pi by ssh using `ssh {hostname}@{ip address}` with password.
 
 ## Communication between different ROS hosts
- each host configuration file list should be as below:
+### Change host file 
+1. each host configuration file list should be  
     `sudo vim /etc/hosts`
-    modify /etc/hosts file of your machine. Each ip address respond to one hostname which you give.
-    Example hosts file:
+2. Add ip address and hostname in `/etc/hosts` file of your Raspberry Pi. Each ip address respond to one hostname which you give.
+Example hosts file:
  
-    ```
+```
 	::1     ip6-localhost ip6-loopback
 	fe00::0 ip6-localnet
 	ff00::0 ip6-mcastprefix
@@ -30,10 +31,10 @@ Raspbian latest system(buster) is not well supported by ROS system. Therefore, t
 
 	192.168.1.11 com1
 	192.168.1.12 com2
-    ```
+```
     
-###  1. Check communication status
-enter ROS system in every ubuntu system
+### Check communication status
+Enter ROS system in every ubuntu system and ssh to com1. Then ping com1 and com2. If ping successfully meaning the network is fine, otherwise check the router and network problem.
 On com1:
 `ssh com1 `
 `ping com1`
@@ -42,13 +43,13 @@ On com2
 `ssh com2`
 `ping com1`
 `ping com2`
-If ping successfully and you can go to the next step or you should check the router network.
-### 2. Multiple hosts configuration
+
+### Talker and listener
 #### Start the listener
 `cd ~/catkin_ws`
 `touch config_ip.sh` creat auto executable file
 `vim config_ip.sh` 
-The host name and ip address is respond to each Raspberry Pi, but the Master URI should be identical.
+The host name and ip address is respond to each Raspberry Pi, but the Master URI should be identical. Create a .sh file to export environment paths.
 
 ```
 # /bin/sh
@@ -59,7 +60,7 @@ export ROS_MASTER_URI=http://com1:11311/
 
 `source config_ip.sh` execute this file to execute all command inside it.
 
-Then run the listener file:
+ 
 `cd ~/catkin_ws`
 `source ./devel/setup.bash`
 `rosrun rospy_tutorials listener.py`
@@ -72,11 +73,14 @@ Run the talker file:
 `rosrun rospy_tutorials talker.py`
 
 When listener can receive message from talker, communication successful.
-### 3. Issues
-Make sure you set the ROS hostname and IP address correctly and you must explicitly set it. **Otherwise the listener cannot receive talker because the host cannot find it in the network.**
-You can check the hostname and ip address setting: 
+
+### Issues
+Make sure setting the ROS hostname and IP address correctly and must explicitly set it. Otherwise the listener cannot receive talker because the host cannot find it in the network. The Talker will send messages continuously but listener can not receive these messages.
+
+Check the hostname and ip address setting can use 
 `echo $ROS_HOSTNAME`
 `echo $ROS_IP`
+
 
 ## Test Message latency
 Use scp copy file and folder to remote Pi.
