@@ -69,27 +69,42 @@ June 11 at 11.30am (Zoom, Natalia)
 - install ROS on ubuntu successfully and networkconfiguration.
 - learn ros, many things many configuration
 - send and receive message via ROS ,然后是自定义（custom）信息 many missing steps and some wrong instruction
-- 知道了整个系统如何运行的。
+
 
 ## week 5
 
 ### TODO
-- resolving configuration issue with ROS communicating(all question is in project steps file)
-- experitment 1 finished
-- experiment 2 design
+- record configuration issue with ROS communicating(all question is in project steps file)
+- dissertation
 
-To add a section on resolving configuration issues with ROS
-Main body
-Appendix (How to)
 
-经过我的查询，node的数量对我的实验没有任何帮助或者说影响。所以我觉得我没必要复现实验7.像你说的因为他做的所以我们尽可能快速的复现他的实验。
 ### Done
 - upload code into bitbucket and github
 - timetable design
-- project steps detailes
+- project steps detailes include issues
+- run the experiment 1 and 4 and collect data then plot the data and compare with issac experiment
+- experitment 1 finished
+
 
 ## week 6
-June 18 at 11.30am (Zoom, Natalia)
-June 24 at 2pm (Phil's office
-- 学习使用wireshark分析网络配置
-- change **background** 
+June 24 at 2pm (Phil's office）
+### TODO
+- reproduce jamie experiment
+I tried it for several days and many times:
+1. different software, raspbian stretch and buster
+2. different hardware, pi 3B and 3B+
+3. usb toggle to increase MTU and I don't have it but I changed an argument but failed again
+4. tried on ubuntu install p2p network but failed again.
+5. So I am not sure whether it will work on this Raspbian. Like ROS system not surpport on latest Raspbian system. Maybe several days maybe I can not install it successfully. So until now I can not reproduce the jamie project and I also do not know in the future days. I think the 3B+ dose not support p2p network or something there are few information about it on the internet
+6. In the future I have to design other experiments so I think no more time for me to test it.
+
+
+Another thing is there is no ROS on the Raspbian and even though I installed p2p on Raspbian and I can not use ROS to communicate.
+
+- improve experiment 1
+
+### Done
+- reproduce and modify experiment 1 compare my experiment with Issac
+- installation write
+
+learn wireshark
