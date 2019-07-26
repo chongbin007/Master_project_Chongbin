@@ -88,23 +88,27 @@ June 11 at 11.30am (Zoom, Natalia)
 
 ## week 6
 June 24 at 2pm (Phil's office）
-### TODO
-- reproduce jamie experiment
-I tried it for several days and many times:
-1. different software, raspbian stretch and buster
-2. different hardware, pi 3B and 3B+
-3. usb toggle to increase MTU and I don't have it but I changed an argument but failed again
-4. tried on ubuntu install p2p network but failed again.
-5. So I am not sure whether it will work on this Raspbian. Like ROS system not surpport on latest Raspbian system. Maybe several days maybe I can not install it successfully. So until now I can not reproduce the jamie project and I also do not know in the future days. I think the 3B+ dose not support p2p network or something there are few information about it on the internet
-6. In the future I have to design other experiments so I think no more time for me to test it.
+
+#### Reproduce jamie experiment
+I tried it for 3 whole days and in different ways and lost much hairs:
+1. Firstly, I tried configure BATMAN on ubuntu but failed and p2p ad-hoc network it is also not successful, there few things about ad-hoc installation.
+2. Then I tried to configure it on Raspbian as Jamie's instruction, information shows no errors but when I check it, not installed succesfully again.
+    different software, raspbian stretch and buster
+    different hardware, pi 3B and 3B+
+    I consulted Jamie and talked deeply, but usb toggle to increase MTU and I don't have it but I changed some argument he said, but failed again
+    
+3. I think the 3B+ dose not support p2p network or something there are few information about it on the internet. 
+
+And now on latest Raspbian system cannot install ROS Jamie also did the same work but failed because some outdate dependency. So I have to use Ubuntu but I tried many times and many ways, and failed. 
+
+So I think I should focus on UDP transport and time are limited next week I will try to use UDP and then do the mutiple robots experiments and collect data and analyze data so time is not enough.
 
 
-Another thing is there is no ROS on the Raspbian and even though I installed p2p on Raspbian and I can not use ROS to communicate.
 
-- improve experiment 1
 
 ### Done
-- reproduce and modify experiment 1 compare my experiment with Issac
-- installation write
+- reproduce and modify experiment 1 compare my experiment with Issac and add the report on dissertation
+- installation write on disseration
+- submit it on github
 
-learn wireshark
+
