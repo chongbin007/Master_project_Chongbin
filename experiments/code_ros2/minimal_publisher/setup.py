@@ -34,10 +34,17 @@ setup(
             ' examples_rclpy_minimal_publisher.publisher_local_function:main',
             'publisher_member_function ='
             ' examples_rclpy_minimal_publisher.publisher_member_function:main',
-            'test_latency_main ='
-            ' examples_rclpy_minimal_publisher.test_latency_main:main',
-            'test_latency_echo ='
-            ' examples_rclpy_minimal_publisher.test_latency_echo:main',
+            'talker ='
+            ' examples_rclpy_minimal_publisher.talker:main',
+            'listener ='
+            ' examples_rclpy_minimal_publisher.listener:main',
+            'udp_client ='
+            ' examples_rclpy_minimal_publisher.udp_client:main',
+            'udp_server ='
+            ' examples_rclpy_minimal_publisher.udp_server:main',
+
+
+            
         ],
     },
 )
