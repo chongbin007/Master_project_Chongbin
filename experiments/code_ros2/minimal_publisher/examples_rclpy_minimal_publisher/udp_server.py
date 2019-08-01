@@ -4,8 +4,8 @@ import socket
 def main(args=None):
     BUFSIZE = 1024
     # server address
-    ip_port = ('192.168.1.2', 9999)
-    # ip_port = ('127.0.0.1', 9999)
+    # ip_port = ('192.168.1.2', 9999)
+    ip_port = ('127.0.0.1', 9999)
     server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  #
     server.bind(ip_port)
 
