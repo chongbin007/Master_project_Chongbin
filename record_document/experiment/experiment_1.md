@@ -10,7 +10,7 @@ In order to acquire a detailed understanding of the performance characteristics 
 1. Install ROS and ubuntu in Raspberry Pi 3B+
 2. Sending message and receive message between two hosts to test communication.
 3. Sending 10HZ message and test message latency.
-4. Run the code which send timestamped messages from the sender host to the echoer host. The sender will receive the message and then record message id into a file. The code is run 3 times with a range of message frequencies from 1hz to 2000Hz to obtain averaged results for each message frequency.
+4. Run the code which send timestamped messages from the sender host to the echoer host. The sender will receive the message and then record message id into a file. The code is run 3 times with a range of message frequencies from 200hz to 2000Hz to obtain averaged results for each message frequency. This frequency is very same with Issac's experiment. 
 
 ## Hardware Configuration
 2 Raspberry Pi 3B+

@@ -4,8 +4,8 @@ import datetime
 
 
 def main(args=None):
-    # ip_port = ('192.168.1.2', 9999)
-    ip_port = ('127.0.0.1', 9999)
+    ip_port = ('192.168.1.2', 9999)
+    # ip_port = ('127.0.0.1', 9999)
     BUFSIZE = 1024
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     f = open("ros2_latency.csv", "w+")
