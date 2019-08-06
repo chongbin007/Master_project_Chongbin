@@ -114,12 +114,11 @@ So I think I should focus on UDP transport and time are limited next week I will
 
 ## week 7
 ### DONE
-install ROS2
+install ROS2 64bits
 communication between ROS2
-modify background
+write own code communication between ROS2 totally different
 
 ### TODO
-write own code communication between ROS2
-write data handle code 
+handle data
 
 
