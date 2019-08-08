@@ -5,6 +5,8 @@
 \usepackage{fancyvrb}
 \usepackage[final]{pdfpages}
 \usepackage{times}
+\usepackage{listings}
+ 
 
 % for alternative page numbering use the following package
 % and see documentation for commands
@@ -18,7 +20,7 @@
 %\usepackage[final]{pdfpages}
 
 \begin{document}
-
+\sloppy
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{Title of project placed here}
 \author{Chongbin Ren}
@@ -54,8 +56,7 @@ acknowledgements go here
 \subsection{A subsection}
 Please note your proposal need not follow the included section headings - this is only a suggested structure. Also add subsections etc as required
 
-\clearpage
-2
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Background}\label{background}
@@ -124,56 +125,77 @@ Ubuntu is available in a number of different flavours, each coming with its own 
 
 Furthermore, Ubuntu is also the recommended operating system in ROS. ROS offers more support for a few Ubuntu version. There is another operating system called Raspbian which is widely installed on Raspberry Pi. However, Raspbian is not well supported by ROS and it may occur many problems when installing ROS in Raspbian. Therefore, ubuntu is used in this experiment for Raspberry Pi as operating system.
 
-\section{ROS Communication}
+\section{Communication on ROS vs ROS2}
 
 \subsection{Star Network Topology}
 A star topology is a topology for a Local Area Network (LAN) in which all nodes are individually connected to a central connection point, like a hub or a switch. A star takes more cable than e.g. a bus, but the benefit is that if a cable fails, only one node will be brought down[18].
 
-All traffic emanates from the hub of the star. The central site is in control of all the nodes attached to it. The central hub is usually a fast, self contained computer and is responsible for routing all traffic to other nodes. The main advantages of a star network is that one malfunctioning node does not affect the rest of the network. However this type of network can be prone to bottleneck and failure problems at the central site.
+All traffic emanates from the hub of the star. The central site is in control of all the nodes attached to it. The central hub is usually a fast, self contained computer and is responsible for routing all traffic to other nodes. The main advantages of a star network is that one malfunctioning node does not affect the rest of the network[19]. However this type of network can be prone to bottleneck and failure problems at the central site.
 
 It is the most common network topology in real life, as it is easy to install, scalable and easy to troubleshoot. At the centre of the network sits the multifunctional wireless router providing the functionality of a wireless access point (WAP), a modem, a switch and a router.
 
 Star network topology is also used in this experiment for testing message latency communicating in different devices with a center router.
 
 The network graph is as follows:
+
 \includegraphics[width = .7\textwidth]{231.png}
 
-\subsection{TCP and UDP}
-Both TCP and UDP work on top of the IP (Internet Protocol). This is why there are terms such as TCP/IP or UDP/IP. In the OSI model, TCP and UDP are both "Transport Layer" Protocols[19]. Where TCP is a connection oriented protocol and UDP is a connectionless protocol.  
 
-TCP and UDP are network protocols that are used to send data packets. These data packets are just bits of data that travel over the internet. When a user chat with his friends online, send an email, or send a page request through browser, he sends online data. This data is transferred in the form of tiny packets. While TCP and UDP are the most commonly used protocols, they aren’t the only ones used to transfer data packets. Another protocol that can be used is ICMP (Internet Control Message Protocol). However, most connections rely on either TCP or UDP.
+\subsection{TCP and UDP in ROS}
 
-There are three main differences between TCP and UDP[20]:
+ROS currently supports TCP/IP-based and UDP-based message transport. The TCP/IP-based transport is known as TCPROS and streams message data over persistent TCP/IP connections. TCPROS is the default transport used in ROS and is the only transport that client libraries are required to support. The UDP-based transport, which is known as UDPROS and is currently only supported in roscpp, separates messages into UDP packets. UDPROS is a low-latency, lossy transport, so is best suited for tasks like teleoperation.
 
-1. Reliability
-TCP is more reliable since it manages message acknowledgment and retransmissions in case of lost parts. Thus there is absolutely no missing data. UDP does not ensure that communication has reached receiver since concepts of acknowledgment, time out and retransmission are not present.
+ROS nodes negotiate the desired transport at runtime. For example, if a node prefers UDPROS transport but the other Node does not support it, it can fallback on TCPROS transport[20]. This negotiation model enables new transports to be added over time as compelling use cases arise.
 
-2. Ordering
-TCP transmissions are sent in a sequence and they are received in the same sequence. In the event of data segments arriving in wrong order, TCP reorders and delivers application. In the case of UDP, sent message sequence may not be maintained when it reaches receiving application. There is no way of predicting the order in which message will be received.
+TCPROS is a transport layer for ROS Messages and Services. It uses standard TCP/IP sockets for transporting message data. Inbound connections are received via a TCP Server Socket with a header containing message data type and routing information[21]. 
 
-3. Connection
-TCP is a heavy weight connection requiring three packets for a socket connection and handles congestion control and reliability. UDP is a lightweight transport layer designed atop an IP. There are no tracking connections or ordering of messages.
-
-In this experiment ROS use TCP and ROS2 use UDP.
+Therefore, in the experiment, ROS use TCPROS to communicate between different machines by default.
+The TCPROS communication structure is as follows:
 
 \includegraphics[width = .7\textwidth]{d.png}
+
+\subsection{Data Distribution Service (DDS) on ROS2}
+When exploring options for the next generation communication system of ROS, the initial options were to either improve the ROS 1 transport or build a new middleware using component libraries such as ZeroMQ, Protocol Buffers, and zeroconf (Bonjour/Avahi)[22]. However, in addition to those options, during the research, one middleware that stood out was DDS.
+
+The benefit of using DDS, is that there is much less code to maintain and the behavior and exact specifications of the middleware have already been distilled into documentation. In addition to system-level documentation, DDS also has recommended use cases and a software API. With this concrete specification, third parties can review, audit, and implement the middleware with varying degrees of interoperability. This is something that ROS has never had, besides a few basic descriptions in a wiki and a reference implementation[23].
+
+ROS2 using DDS as message transport service. DDS provides a publish-subscribe transport which is very similar to ROS’s publish-subscribe transport. It allows any two DDS programs to communicate without the need for a tool like the ROS master[24]. This makes the system more fault tolerant and flexible.
+
+The default implementation of DDS is over UDP,  DDS implementations use (UDP) broadcast traffic for peer discovery. By default, when sending message, the ROS2 communication will broadcast to the local subnet (ie: all IPs in the same range).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Installation and configuration}
 
 \section{Ubuntu and ROS system installation}
 
-ubuntu version bits
-\subsection{Steps}
-1. Down load the latest version image of Ubuntu with ROS in the ROS official website.
+\subsection{Ubuntu installation}
+1. Download the latest version image of Ubuntu Bionic (64-bits) for Raspberry Pi from official website.
 
-2. Write the image to Raspberry Pi by using SD card.
+2. Write the image to Raspberry Pi 3B+ by using SD card.
 
-3. Start the ubuntu system with installed ROS and envonriment automatically. 
+3. Run it with screen and configure all necessary dependency and install "openssh" server for remote control.
+ 
+\textbf{Issues and Solution} 
 
-4. Type `roscore` to test whether ROS system exist.
-\subsection{Issues and Solution}
-Raspbian 10(buster) is not well supported by ROS system. There are some outdated dependencies which is needed in installing ROS. Therefore, there are many bugs and manually installation steps to solve when user want to install ROS in Raspbian operating system. Then the ubuntu is recommend operating system as official website said.
+1. Other operating system like Raspbian 10(buster) is not well supported by ROS system. There are some outdated dependencies which is needed in installing ROS. Therefore, there are many bugs and manually installation steps to solve when user want to install ROS in Raspbian operating system. Then the Ubuntu is recommend operating system as official website said.
+
+2. Find the 64-bits version operating system because ROS2 only can run on 64-bits operating system.
+
+\subsection{ROS1 Installation}
+
+1. Follow the step details at first appendix A1 ROS1.
+
+2. Configure Ubuntu repositories to allow "restricted," "universe," and "multiverse."
+
+3. After installation, use \textit{roscore} to test whether ROS system exist.
+
+\subsection{ROS2 Installation}
+
+1. Installing ROS2 via Debian Packages.
+
+2. Follow the step details at first appendix A2 ROS2. 
+
+3. Using \textit{ros2 run XXpackage XXfile} to test whether ROS2 can run successfully.
 
 
 \section{Router network configuration}
@@ -183,45 +205,31 @@ Raspbian 10(buster) is not well supported by ROS system. There are some outdated
 
 3. Using one computer to join this LAN for controlling the all Raspberry Pi.
 
-4. Remote control other Raspberry Pi by ssh using `ssh {hostname}@{ip address}` with password.
+4. Remote control other Raspberry Pi by ssh using \textit{ssh {hostname}@{ip address}} with password.
 
 
 \section{Communication between different ROS hosts}
-\subsection{Change the host file}
-1. each host configuration file list should be  
-    `sudo vim /etc/hosts`
-    
-2. Add ip address and hostname in `/etc/hosts` file of your Raspberry Pi. Each ip address respond to one hostname which you give.
-Example hosts file:
+\textbf{Change the host file} 
 
-\begin{verbatim}
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
+Each host configuration file can be modify by \textit{sudo vim /etc/hosts}. Add ip address and hostname in \textit{/etc/hosts} file for Raspberry Pi. Each ip address respond to one hostname which you give.
+Example hosts file is in the Appendix.
 
-192.168.1.11 com1
-192.168.1.12 com2
-\end{verbatim}
+\textbf{Running Talker and Listener}
 
-\subsection{Talker and Listener}
-Enter ROS system in every ubuntu system and ssh to com1. Then ping com1 and com2. If ping successfully meaning the network is fine, otherwise check the router and network problem.
+Enter ROS system in every Ubuntu system and ssh to com1. Then ping com1 and com2. If ping successfully meaning the network is fine, otherwise check the router and network problem.
 
-The host name and ip address is respond to each Raspberry Pi, but the Master URI should be identical. Create a .sh file to export environment paths.
-\begin{verbatim}
-# /bin/sh
-export ROS_HOSTNAME=com1
-export ROS_IP=192.168.1.11
-export ROS_MASTER_URI=http://com1:11311/
-\end{verbatim}
+The host name and ip address is respond to each Raspberry Pi, but the Master URI should be identical. Create a  \textit{.sh} file to export environment paths. See the appendix
 
-Configure the file and execute this file in every Raspberry Pi host. Then run the talker and listener python file separatlly in different hosts to check if listener can receive messages from talker.
+Configure the file and execute this file in every Raspberry Pi host. Then run the talker and listener python file seperately in different hosts to check if listener can receive messages from talker.
 
-\subsection{Issues and Solution}
+\textbf{Issues and Solution}
+
 Make sure setting the ROS hostname and IP address correctly and must explicitly set it. Otherwise the listener cannot receive talker because the host cannot find it in the network. The Talker will send messages continuously but listener can not receive these messages.
 
 Check the hostname and ip address setting can use:
 \begin{verbatim}
-`echo $ROS_HOSTNAME`
-`echo $ROS_IP`
+echo $ROS_HOSTNAME
+echo $ROS_IP
 \end{verbatim}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -229,35 +237,38 @@ Check the hostname and ip address setting can use:
 
 \section{Experiment 1: Revising wifi router performance experiment}
 \textbf{Objective} \\
-This experiment investigates the performance in different frequency of message passing by using Wi-Fi network connection in a router.  This experiment was executed by Issac in the previous and my aim is execute this experiment to compare it with the previous one.
+This experiment investigates the performance in different frequency of message passing by using Wi-Fi network connection in a router.  This experiment was executed by Issac in the previous and my aim is execute this experiment to compare it with the previous one[25].
 
 \textbf{Rationale} \\
 In order to acquire a detailed understanding of the performance characteristics of ROS’ communication channels, this experiment use two ROS hosts to commnunicate with each other and get the message latency results in different message frequency. I reproduced Issac's experiment to see what is the difference between my experiment and the previous one then analyze the reason to cause these differences.
 
 \textbf{Procedure} \\
-1. Install ROS and ubuntu in Raspberry Pi 3B+ \\
-2. Sending message and receive message between two hosts to test communication. \\
-3. Sending 10HZ message and test message latency. \\
-4. Run the code which send timestamped messages from the sender host to the echoer host. The sender will receive the message and then record message id into a file. The code is run 3 times with a range of message frequencies from 1hz to 2000Hz to obtain averaged results for each message frequency.
+1. Start one master node on one host and send different frequency message to a echoer node on another host by using Wifi network. \\
+2. Run the code which send timestamped messages from the sender host to the echoer host. Then the echoer host receive message and send it back to master host. \\
+3. The master node will receive the message and then record message id and time in sending and receving into a file.  \\
+4. Message frequency is from 200 to 2000Hz (200,400,600...2000)which is same with Issac experiment. \\
+5. Every frequency will be recorded 3 times with a range of message frequencies to obtain averaged results for each message frequency.
 
 \textbf{Hardware Configuration} \\
 2 Raspberry Pi 3B+ \\
-TP-Link 150M router
+TP-Link 150M Router
 
 \textbf{Software Configuration} \\
-Ubuntu 16.04 \\
-ROS Kinetic 
+Ubuntu 18.04 Bionic \\
+ROS Melodic (Released May, 2018)
 
 \textbf{Hypothesis} \\
-1. The latency should be not regular(explain) due to the wifi connection is not stable. \\
-2. Different message frequency may perform different latency due to the wifi environment.
+1. The message latency should be like the previous experiment results. \\
+2. Different message frequency may perform different latency. For example, lower message frequency can have lower message latency.
 
 \textbf{Results} \\
-The data which I collect and plot is as follows, the left one is mine and the right one is Issac's experiment graph.
+The data which I collect and plot is as follows, the left one is mine and the right one is Issac's experiment graph. I only plot six different frequency instead of Issac 10 frequency because it may have too many lines to recognize. 
 
-\includegraphics[width = 1\textwidth]{compare_issac.jpg}
+\includegraphics[width = 1\textwidth]{compare.png}
 
 \textbf{Conclusion} \\
+In my experiment, the message latency is below 35ms which is similar with Issac experiment. 
+200Hz Message latency is around 5ms and 400Hz is around 8ms.
 The previous experiment by Issac shows lower latency and I think that is due to the different hardware and some other environment factors.
 
 The message latency is not regular and different frequency can perform relatively different latency. Wifi connection can be different in different time so that is why the latency is obvious in specific time period.
@@ -288,7 +299,79 @@ The message latency is not regular and different frequency can perform relativel
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{First appendix}
 
-\section{Section of first appendix}
+\section{ROS installation commond steps}
+
+\begin{verbatim}
+# Install system
+
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc)
+main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key
+C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+sudo apt update
+sudo apt install ros-melodic-ros-base
+
+# Install tools and dependencies
+
+sudo rosdep init
+rosdep update
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+sudo apt install python-rosinstall python-rosinstall-generator python-wstool 
+build-essential
+
+# Start ROS service and create workspace
+
+roscore
+create catkin folder
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/
+catkin_make
+source devel/setup.bash
+
+\end{verbatim}
+
+\section{ROS2 installation steps}
+
+\begin{verbatim}
+# Install 
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+sudo apt update && sudo apt install curl gnupg2 lsb-release
+curl -s 
+https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+install
+export CHOOSE_ROS_DISTRO=crystal
+sudo apt update
+sudo apt install ros-$CHOOSE_ROS_DISTRO-ros-base
+
+# Environment setup
+sudo apt install python3-argcomplete
+source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash
+echo "source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash" >> ~/.bashrc
+sudo apt install python3-colcon-common-extensions
+
+# create workspace
+mkdir -p ~/ros2_example_ws/src
+cd ~/ros2_example_ws
+
+\end{verbatim}
+\textit{/etc/hosts}
+\begin{verbatim}
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+192.168.1.11 com1
+192.168.1.12 com2
+\end{verbatim}
+\textit{config.sh}
+\begin{verbatim}
+# /bin/sh
+export ROS_HOSTNAME=com1
+export ROS_IP=192.168.1.11
+export ROS_MASTER_URI=http://com1:11311/
+\end{verbatim}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Second appendix}
@@ -333,30 +416,18 @@ The message latency is not regular and different frequency can perform relativel
 
 [18] Star topology. \url{http://www.telecomabc.com/s/star.html}. 2015
 
+[19] Star topology. Cisco Networking Academy 2014.
 
+[20] Topics. \url{http://wiki.ros.org/Topics}. 2019-02-20
 
-[6] "Linux 2 6 38". Linux Kernel Newbies.
+[21] TCPROS. \url{http://wiki.ros.org/ROS/TCPROS}. 2013-04-15 
 
-[8] "Zero WH: Pre-soldered headers and what to do with them". Raspberry Pi Foundation. Retrieved 12 January 2018.
+[22] ROS on DSS. \url{https://design.ros2.org/articles/ros_on_dds.html}
 
-[9] "FrontPage - Raspbian". \url{www.raspbian.org}. Retrieved 2016-04-04.
+[23] Why Consider DDS. ROS on DSS. \url{https://design.ros2.org/articles/ros_on_dds.html}
 
-[10] "Introducing PIXEL - Raspberry Pi". Raspberry Pi. 2016-09-28. Retrieved 2017-01-07.
+[24] Where did DDS come from. ROS on DSS. \url{https://design.ros2.org/articles/ros_on_dds.html}
 
-
-[19] "Communication Networks/TCP and UDP Protocols". \url{https://en.wikibooks.org/wiki/Communication_Networks/TCP_and_UDP_Protocols}.
-
-[20] "What’s the Difference Between TCP and UDP?". \url{https://www.howtogeek.com/190014/htg-explains-what-is-the-difference-between-tcp-and-udp/}.
-
-[21] "Star topology". Cisco Networking Academy 2014.
-
-[22] "Mesh topology". \url{https://www.computerhope.com/jargon/m/mesh.htm}.
-
-[23] "Open Mesh". \url{https://www.openmesh.com/datto-networking}.
-
-
-
-
-[27] "Changes between ROS 1 and ROS 2". \url{http://design.ros2.org/articles/changes.html}.
+[25] Issac Jordan. Experiment \url{https://github.com/Sheepzez/ ros-multirobot-evaluation/tree/master/experiments/message_latency/ bag-sender-receiver}. Accessed: 2017-03-18.
 
 \end{document}

@@ -22,6 +22,12 @@
 ### 2.3 ROS Commnucation
 #### 2.3.1 Star Network Topology 
 #### 2.3.2 TCP and UDP
+
+### 3.1 Ubuntu and ROS system installation
+### 3.2 ROS2 installation
+### 3.3 ROS2 installation
+
+
 ## 2. background
 ### 2.1 Robotics
 Robotics is a branch of engineering that involves the conception, design, manufacture, and operation of robots[24]. Robots are machines that can be used to do jobs. Some robots can do work by themselves. Other robots must always have a person telling them what to do. Today’s robotic systems generally consist of many small autonomous systems working together to form a coherent whole[25].
