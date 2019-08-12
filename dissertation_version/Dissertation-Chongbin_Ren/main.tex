@@ -43,7 +43,13 @@ abstract goes here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgements}
 
-acknowledgements go here
+I would like to thank the following people for their help and support throughout the project.
+
+My supervisor, Professor Phil Trinder and Natalia Chechina, for their invaluable support and advice at all stages of doing my experiment and this dissertation. Of course, every experiment may encounter problems and failures even many upsets. However, they guide me and encourage me in different ways.
+
+Also thanks many students who I met here and work together for the whole day and night.
+
+I am eternally indebted to my family for supporting me and making it possible for me to complete this Master’s degree. I thank my parents who support me to have a totally different trip in a foreign country. At last, I will thank my dear girl friend who accompany me and encourage me all the time.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \tableofcontents
@@ -52,11 +58,25 @@ acknowledgements go here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}\label{intro}
 
-\section{A section}
-\subsection{A subsection}
-Please note your proposal need not follow the included section headings - this is only a suggested structure. Also add subsections etc as required
+\section{Context}
+New industrial, personal, enterprise, and toy robots are being announced pretty much daily. There are indications that a rapid increase in the numbers of robots employed in industry is already taking place. For example, a drone is a flying robot that can be remotely controlled or fly autonomously through software-controlled flight plans in their embedded systems, working in conjunction with on board sensors and GPS[26]. The SunFounder Smart Video Car Kit for Raspberry Pi is composed of Raspberry Pi, DC-DC Step-down Voltage Module, USB camera, and  Servo Controller[27]. It can be control by an Android phone to move or take a picture. The smart car is developed based on the open-source hardware Raspberry Pi and integrates the knowledge of mechanics, electronics, and computer, thus having profound educational significance.
 
+ROS is a software framework which can allow user to write applications and operate robotic hardware (hence Robot Operating System). ROS as it has existed for several years and has many versions. Some are older releases with long term support, making them more stable. ROS2 is a new version robot operating system but it is under heavy development. The goal of the ROS 2 project is to adapt to some changes, leveraging what is great about ROS1 and improving what is not[28].
 
+Publishers are classes provided by the ROS library which are used to publish messages to a topic. Subscribers are classes used to receive messages from topics. Once a subscriber subscribes to a particular topic, the Master manages a connection between the publishing node and the subscribing node, so that the information is passed directly between the two processes.
+
+This means that when you publish messages to a topic that no node subscribes too, no information is actually being communicated, since no connections have been established. When a topic has multiple subscribers, both subscribers receive the same messages since at the same time since two individual connections are setup between the publisher and each subscriber.
+
+Messages: ROS data type used when subscribing or publishing to a topic.
+Topics: Nodes can publish messages to a topic as well as subscribe to a topic to receive messages.
+Master: Name service for ROS (i.e. helps nodes find each other)
+
+\section{Object}
+The aim of the research is to measure the communication performance between ROS1 and ROS2 two different robot system generation. Through sending and receiving message between multiple machines and test message latency and throughput to compare them, so that future researchers can have a understanding of two different generation ROS system communication performance.
+
+\section{Contribution}
+1. reproduce and compare different ros in different operating system
+2. ros2 compare with ros1 in latency
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Background}\label{background}
@@ -235,7 +255,7 @@ echo $ROS_IP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Experiment and Analysis}
 
-\section{Experiment 1: Revising wifi router performance experiment}
+\section{Experiment 1: Comparing different ROS1 version  with previous experiment}
 \textbf{Objective} \\
 This experiment investigates the performance in different frequency of message passing by using Wi-Fi network connection in a router.  This experiment was executed by Issac in the previous and my aim is execute this experiment to compare it with the previous one[25].
 
@@ -247,51 +267,156 @@ In order to acquire a detailed understanding of the performance characteristics 
 2. Run the code which send timestamped messages from the sender host to the echoer host. Then the echoer host receive message and send it back to master host. \\
 3. The master node will receive the message and then record message id and time in sending and receving into a file.  \\
 4. Message frequency is from 200 to 2000Hz (200,400,600...2000)which is same with Issac experiment. \\
-5. Every frequency will be recorded 3 times with a range of message frequencies to obtain averaged results for each message frequency.
+5. Every frequency will be recorded 3 times with a range of message frequencies to obtain averaged results for each message frequency. \\
+6. Running this experiment in different ROS1 version and operating system.
 
 \textbf{Hardware Configuration} \\
-2 Raspberry Pi 3B+ \\
+4 Raspberry Pi 3B+ \\
 TP-Link 150M Router
 
 \textbf{Software Configuration} \\
-Ubuntu 18.04 Bionic \\
-ROS Melodic (Released May, 2018)
+Ubuntu 18.04 Bionic (64-bit)\\
+ROS Melodic (Latest, Released May, 2018) \\
+Ubuntu 16.04 Xenial (32-bit) \\
+ROS Kinetic Kame (Released May, 2016)
 
 \textbf{Hypothesis} \\
 1. The message latency should be like the previous experiment results. \\
-2. Different message frequency may perform different latency. For example, lower message frequency can have lower message latency.
-
+2. Different message frequency may perform different latency. For example, lower message frequency can have lower message latency. \\
 \textbf{Results} \\
-The data which I collect and plot is as follows, the left one is mine and the right one is Issac's experiment graph. I only plot six different frequency instead of Issac 10 frequency because it may have too many lines to recognize. 
+The previous experiment from Issac is Figure 4.1. I only plot six different frequency instead of Issac 10 frequency because it may make the graph more clear to check out. The Figure 4.2 is message latency from ROS kinetic on Ubuntu Xenial and the figure 4.3 is ROS Melodic on Ubuntu Bionic.
 
-\includegraphics[width = 1\textwidth]{compare.png}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 1\textwidth]{ex1_issac.png}
+\caption{Message latency for all frequency in Issac experiment}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 1\textwidth]{ex1_res1.png}
+\caption{Message latency for ROS kinetic on Ubuntu Xenial 32-bit}
+\end{figure}
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 1\textwidth]{ex1_res2.png}
+\caption{Message latency for ROS Melodic on Ubuntu Bionic 64-bit}
+\end{figure}
 
 \textbf{Conclusion} \\
-In my experiment, the message latency is below 35ms which is similar with Issac experiment. 
-200Hz Message latency is around 5ms and 400Hz is around 8ms.
-The previous experiment by Issac shows lower latency and I think that is due to the different hardware and some other environment factors.
-
-The message latency is not regular and different frequency can perform relatively different latency. Wifi connection can be different in different time so that is why the latency is obvious in specific time period.
-
-
-\clearpage
- 3
-\clearpage
- 4
-\clearpage
- 5
-\clearpage
- 6
+1. The message latency from previous experiment by Issac is all almost under 20ms lower latency like 200Hz and 400Hz are very low latency and perform better than higher frequency like 1800Hz and 2000Hz. \\
+2. In my experiment, message latency is high and very unstable in ROS kinetic on Ubuntu Xenial 32bits. Message latency can be up to hundreds millisecond which is ten times than previous experiment message latency.\\
+3. Then in ROS Melodic on Ubuntu Bionic 64bits, the message latency is low and the result is very like the previous Issac's one. In lower frequency 200Hz and 400Hz show under 10ms latency and in higher message frequency, latency can be vary at 15-20Hz.\\
+4. The ROS version and operating system version may have influence on the communication performance between different hosts. Router could also be a factor that have slightly impact on message latency.
 
 
+\section{Experiment 2: ROS1 and ROS2 message latency comparing}
+\textbf{Objective} \\
+The aim for this experiment is to compare the message latency in communication between ROS1 and ROS2 in all other same condition. Then have a data analyze for different frequency message to conclude communication performance. 
+
+\textbf{Rationale} \\
+In order to acquire a detailed performance characteristics of ROS1 and ROS2 channels, this experiment uses Raspberry Pi 3B+ which installed operating 64-bit ubuntu system. Then communicating by the same router with ROS1 and ROS2 separately. This can guaranteed the same variable and validity of this experiment.
+
+\textbf{Procedure} \\
+1. Start one node on one Raspberry Pi and send different frequency message to another host through wifi router. \\
+2. Using "rospy" in ROS1 run python2 code which send timestamped messages from the sender host to the echoer host. Then the echoer host send message back to sender host. \\
+3. The sender node will receive the message and then record message id and time elapsed in communication into a file.  \\
+4. Message frequency is from low frequency (1Hz and 10Hz), middle frequency(100 and 200Hz) and high frequency (1000 and 2000Hz). Every frequency will be run 3 times and get a mean time results.\\
+5. Using "rclpy" in ROS2 run python3 code which also send and receive message and then record the results. \\
+6. Record all result and plot by using python in Jupyter notebook.
+
+\textbf{Hardware Configuration} \\
+4 Raspberry Pi 3B+ \\
+TP-Link 150M Router
+
+\textbf{Software Configuration} \\
+Ubuntu 18.04 Bionic (64-bit)\\
+ROS1 Melodic (Latest, Released May, 2018) \\
+ROS2 Crystal Clemmys (Released December 2018)
+
+\textbf{Hypothesis} \\
+1. In ROS2 the message latency is lower than ROS1 overall.\\
+2. High frequency has lower message latency than lower frequency in both ROS1 and ROS2.
+
+\textbf{Results} \\
+Figure 4.4 and 4.5 compare ROS1 an ROS2 message latency from 1Hz to 2000Hz message frequency. Figure 4.6 and Figure 4.7 compare 1Hz and 10Hz message frequency. Figure 4.8 and Figure 4.9 compare 100Hz and 200Hz message frequency. Figure 4.10 and Figure 4.11 compare 1000Hz and 2000Hz message frequency.
+
+\begin{figure}
+\begin{minipage}[h]{0.5\linewidth}
+\centering
+\includegraphics[width = 1\textwidth]{all.png}
+\caption{ROS1 all frequency}
+\label{fig:side:a}
+\end{minipage}%
+\begin{minipage}[h]{0.5\linewidth}
+\centering
+\includegraphics[width = 1\textwidth]{all2.png}
+\caption{ROS2 all frequency}
+\label{fig:side:b}
+\end{minipage}
+\end{figure}
+
+\begin{figure}
+\begin{minipage}[h]{0.5\linewidth}
+\centering
+\includegraphics[width = 1\textwidth]{low.png}
+\caption{ROS1 1Hz and 10Hz}
+\label{fig:side:a}
+\end{minipage}%
+\begin{minipage}[h]{0.5\linewidth}
+\centering
+\includegraphics[width = 1\textwidth]{low2.png}
+\caption{ROS2 1Hz and 10Hz}
+\label{fig:side:b}
+\end{minipage}
+\end{figure}
+
+\begin{figure}
+\begin{minipage}[h]{0.5\linewidth}
+\centering
+\includegraphics[width = 1\textwidth]{middle.png}
+\caption{ROS1 100Hz and 200Hz}
+\label{fig:side:a}
+\end{minipage}%
+\begin{minipage}[h]{0.5\linewidth}
+\centering
+\includegraphics[width = 1\textwidth]{middle1.png}
+\caption{ROS2 100Hz and 200Hz}
+\label{fig:side:b}
+\end{minipage}
+\end{figure}
+
+\begin{figure}
+\begin{minipage}[h]{0.5\linewidth}
+\centering
+\includegraphics[width = 1\textwidth]{high.png}
+\caption{ROS1 1000Hz and 2000Hz}
+\label{fig:side:a}
+\end{minipage}%
+\begin{minipage}[h]{0.5\linewidth}
+\centering
+\includegraphics[width = 1\textwidth]{high2.png}
+\caption{ROS2 1000Hz and 2000Hz}
+\label{fig:side:b}
+\end{minipage}
+\end{figure}
+
+
+\textbf{Conclusion} \\
+1. From the experiment, overall, ROS1 is less stable than ROS2 from low frequency to high frequency. Most message latency is under 50ms in ROS2, but massage can vary under 100ms in ROS1. \\
+2. In low frequency, 1Hz and 10Hz comparing, ROS1 latency is not stable and sometimes shows high frequency over 200ms. However, in ROS2, most message latency is very low, only few message shows high latency that might be the network problem. \\
+3. Then in middle frequency, 100Hz and 200Hz message  frequency, ROS1 message latency can vary from 20ms to 100ms. However, ROS2 shows a stable and low message latency under 10ms.\\
+4. In High frequency, 1000Hz and 2000Hz, message latency is from 30ms to 70ms in ROS1, which is obviously higher than ROS2 under 10ms.
+5. To conclude, ROS2 can show more stable and less message frequency than ROS1 with the same hardware and operating system. Although sometimes there will be network fluctuation causing very high message latency, it may be solved if using better hardware like router.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusion}\label{conclusion}
-1
+\section{Summary}
 
 
 
 \clearpage
-2
+\section{Future work}
 
 
 
@@ -299,7 +424,7 @@ The message latency is not regular and different frequency can perform relativel
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{First appendix}
 
-\section{ROS installation commond steps}
+\section{ROS1 installation commond steps}
 
 \begin{verbatim}
 # Install system
@@ -429,5 +554,12 @@ export ROS_MASTER_URI=http://com1:11311/
 [24] Where did DDS come from. ROS on DSS. \url{https://design.ros2.org/articles/ros_on_dds.html}
 
 [25] Issac Jordan. Experiment \url{https://github.com/Sheepzez/ ros-multirobot-evaluation/tree/master/experiments/message_latency/ bag-sender-receiver}. Accessed: 2017-03-18.
+
+[26] Drone (UAV) \url{https://internetofthingsagenda.techtarget.com/definition/drone}. July 2019
+
+[27] Sunfounder Smart Video Car Kit for Raspberry Pi. \url{https://github.com/sunfounder/Sunfounder_Smart_Video_Car_Kit_for_RaspberryPi}.
+
+[28] ROS 2 Overview. \url{https://index.ros.org/doc/ros2/}.
+
 
 \end{document}
