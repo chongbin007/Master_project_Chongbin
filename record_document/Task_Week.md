@@ -104,8 +104,6 @@ And now on latest Raspbian system cannot install ROS Jamie also did the same wor
 So I think I should focus on UDP transport and time are limited next week I will try to use UDP and then do the mutiple robots experiments and collect data and analyze data so time is not enough.
 
 
-
-
 ### Done
 - reproduce and modify experiment 1 compare my experiment with Issac and add the report on dissertation
 - installation write on disseration
@@ -121,4 +119,14 @@ write own code communication between ROS2 totally different
 ### TODO
 handle data
 
+## week 8
+### DONE
+- write experiment 1 and 2 draft and get the feedback from natalia. I am trying to modify it now.
+- experiment 2 message latency comaring ROS1 and ROS 
 
+
+### TODO
+- whether should I finish another experiment throughput
+
+- 8.15or16 focus on the dissertation and finish all it one week and modify it one week.
+ I have to finish experiment this week and rewrite report
