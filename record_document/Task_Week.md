@@ -130,3 +130,8 @@ handle data
 
 - 8.15or16 focus on the dissertation and finish all it one week and modify it one week.
  I have to finish experiment this week and rewrite report
+
+
+1.1 context 
+1.2 contributions
+

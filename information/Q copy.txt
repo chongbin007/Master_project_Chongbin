@@ -1,6 +1,0 @@
-If you are having difficulty in submitting - just create a Dropbox/Google folder and place your files into Code and Dissertation subdirectories. Mail the link to Douglas.MacFarlane@glasgow.ac.uk and copy your supervisor. Douglas will acknowledge your mail.
-Please include  a signed  declaration of originality form in PDF (provided below) - LTC system might not work anymore!
-
-Your report should use the provided latex or Word templates. The guidelines for upper limits on page length are given below (each upper limit is strict with penalties for failing to meet the limit). Page counting starts from the first page of the first chapter (Introduction) to the last page of the report. 
-
-msc development project: maximum 30 pages (including Appendix & starting at the first page of Introduction);
